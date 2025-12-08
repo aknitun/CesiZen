@@ -1,52 +1,83 @@
-# Cache and logs (Symfony2)
-/app/cache/*
-/app/logs/*
-!app/cache/.gitkeep
-!app/logs/.gitkeep
+# .gitignore pour un projet Symfony (PHP 8+, Symfony 6.x)
+# Inclut exclusions courantes pour Windows, PhpStorm, Composer, Node, et Symfony
 
-# Email spool folder
-/app/spool/*
+# Systèmes d'exploitation
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# Cache, session files and logs (Symfony3)
-/var/cache/*
-/var/logs/*
-/var/sessions/*
-!var/cache/.gitkeep
-!var/logs/.gitkeep
-!var/sessions/.gitkeep
+# IDEs / éditeurs
+/.idea/
+*.iml
+.vscode/
+*.sublime-workspace
+*.sublime-project
 
-# Logs (Symfony4)
-/var/log/*
-!var/log/.gitkeep
-
-# Parameters
-/app/config/parameters.yml
-/app/config/parameters.ini
-
-# Managed by Composer
-/app/bootstrap.php.cache
-/var/bootstrap.php.cache
-/bin/*
-!bin/console
-!bin/symfony_requirements
+# PHP / Composer
 /vendor/
+composer.phar
 
-# Assets and user uploads
-/web/bundles/
-/web/uploads/
+# Fichiers d'environnement locaux (ne pas versionner les secrets)
+.env.local
+.env.*.local
+.env.local.php
+/.env.test
+/.env.test.local
 
-# PHPUnit
-/app/phpunit.xml
-/phpunit.xml
+# Dossiers temporaires et cache (Symfony)
+/var/
+/var/**
 
-# Build data
-/build/
+# Dossier public généré / assets build
+/public/build/
+/assets/build/
+/public/bundles/
 
-# Composer PHAR
-/composer.phar
+# Node / frontend
+/node_modules/
+npm-debug.log*
+yarn-error.log
+pnpm-lock.yaml   # si tu utilises pnpm tu peux l'ajuster selon ton workflow
 
-# Backup entities generated with doctrine:generate:entities command
-**/Entity/*~
+# Logs, rapports et fichiers temporaires
+*.log
+/logs/
+phpunit.result.cache
+.phpunit.result.cache
+coverage/
+build/
+dist/
+tmp/
+*.cache
 
-# Embedded web-server pid file
-/.web-server-pid
+# Tests / coverage
+/.phpunit.result.cache
+/coverage/
+
+# Fichiers temporaires Windows
+Thumbs.db
+ehthumbs.db
+
+# Fichiers temporaires d'IDE / outils
+/.vagrant/
+/.idea/
+/*.swp
+*~.nib
+*.swo
+
+# Fichiers de déploiement / certificats locaux
+/.env.local.php
+/.symfony/
+.symfony/
+.symfony.lock
+
+# Secrets ou clés privées éventuelles
+*.key
+*.pem
+
+# Eviter d'ignorer (verrou) : ne pas ignorer composer.lock ni package-lock.json si tu veux reproduire install
+# (donc ces fichiers sont volontairement non listés)
+
+# Si tu as des fichiers que tu veux garder dans var/ (ex: .gitkeep), ajoute une exception explicite:
+# !/var/.gitkeep
