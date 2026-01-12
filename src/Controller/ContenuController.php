@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/')]
+#[Route('/contenu')]
 final class ContenuController extends AbstractController
 {
     #[Route(name: 'app_contenu_index', methods: ['GET'])]
