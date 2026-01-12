@@ -1,0 +1,13 @@
+<h1>Exercices de respiration publiés</h1>
+
+{% if exercices is empty %}
+    <p>Aucun exercice pour le moment.</p>
+{% else %}
+    <ul>
+        {% for ex in exercices %}
+            <li>
+                {{ ex.nom }} — Inspiration: {{ ex.dureeInspiration }}s, Apnée: {{ ex.dureeApnee }}s, Expiration: {{ ex.dureeExpiration }}s
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

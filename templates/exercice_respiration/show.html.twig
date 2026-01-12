@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ExerciceRespiration{% endblock %}
+
+{% block body %}
+    <h1>ExerciceRespiration</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ exercice_respiration.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ exercice_respiration.nom }}</td>
+            </tr>
+            <tr>
+                <th>DureeInspiration</th>
+                <td>{{ exercice_respiration.dureeInspiration }}</td>
+            </tr>
+            <tr>
+                <th>DureeApnee</th>
+                <td>{{ exercice_respiration.dureeApnee }}</td>
+            </tr>
+            <tr>
+                <th>DureeExpiration</th>
+                <td>{{ exercice_respiration.dureeExpiration }}</td>
+            </tr>
+            <tr>
+                <th>Publier</th>
+                <td>{{ exercice_respiration.publier ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_exercice_respiration_index') }}">back to list</a>
+
+    <a href="{{ path('app_exercice_respiration_edit', {'id': exercice_respiration.id}) }}">edit</a>
+
+    {{ include('exercice_respiration/_delete_form.html.twig') }}
+{% endblock %}

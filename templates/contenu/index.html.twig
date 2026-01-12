@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <div>
+        <a href="{{ path('app_contenu_index') }}">Accueil</a> |
+        <a href="{{ path('app_exercice_respiration_index') }}">Exercices</a> |
+        <a href="{{ path('app_user_edit') }}">Mon compte</a>
+    </div>
+
+    <a href="{{ path('app_contenu_new') }}" class="btn btn-primary mb-3">
+        Nouveau contenu
+    </a>
+    <h1>Liste des contenus publiés</h1>
+
+    {% if contenus is empty %}
+        <p>Aucun contenu pour le moment.</p>
+    {% else %}
+        <ul>
+            {% for contenu in contenus %}
+                <li class="mb-3">
+                    <h3>{{ contenu.titre }}</h3>
+                    <p>{{ contenu.corps }}</p>
+
+                    <a href="{{ path('app_contenu_edit', {id: contenu.id}) }}" class="btn btn-warning btn-sm">
+                        Modifier
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

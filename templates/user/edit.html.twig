@@ -1,0 +1,13 @@
+﻿<h1>Mon compte</h1>
+
+{% for message in app.flashes('success') %}
+    <p style="color: green;">{{ message }}</p>
+{% endfor %}
+
+{{ form_start(userForm) }}
+    {{ form_row(userForm.email) }}
+    {{ form_row(userForm.nom) }}
+    {{ form_row(userForm.prenom) }}
+
+<button type="submit">Mettre à jour</button>
+{{ form_end(userForm) }}

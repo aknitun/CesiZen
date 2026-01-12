@@ -1,83 +1,58 @@
-# .gitignore pour un projet Symfony (PHP 8+, Symfony 6.x)
-# Inclut exclusions courantes pour Windows, PhpStorm, Composer, Node, et Symfony
+# === Symfony / PHP ===
+/vendor/
+composer.lock
+composer.phar
 
-# Systèmes d'exploitation
+# Cache & logs
+/var/cache/
+/var/log/
+var/cache/*
+var/log/*
+
+# Env files (ne pas commit les secrets)
+.env.local
+.env.*.local
+.env.local.php
+.env.test
+.env.dev
+.env.prod
+
+# Symfony Profiler
+/.web-server-pid
+
+# === IDE / OS ===
+# PhpStorm / IntelliJ
+/.idea/
+*.iml
+
+# VS Code
+.vscode/
+.history/
+
+# MacOS
 .DS_Store
+
+# Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# IDEs / éditeurs
-/.idea/
-*.iml
-.vscode/
-*.sublime-workspace
-*.sublime-project
-
-# PHP / Composer
-/vendor/
-composer.phar
-
-# Fichiers d'environnement locaux (ne pas versionner les secrets)
-.env.local
-.env.*.local
-.env.local.php
-/.env.test
-/.env.test.local
-
-# Dossiers temporaires et cache (Symfony)
-/var/
-/var/**
-
-# Dossier public généré / assets build
-/public/build/
-/assets/build/
-/public/bundles/
-
-# Node / frontend
+# === Node / Front (si tu utilises Webpack Encore, Vite, etc.) ===
 /node_modules/
-npm-debug.log*
-yarn-error.log
-pnpm-lock.yaml   # si tu utilises pnpm tu peux l'ajuster selon ton workflow
+/public/build/
+/public/assets/
+/yarn.lock
+pnpm-lock.yaml
+package-lock.json
 
-# Logs, rapports et fichiers temporaires
-*.log
-/logs/
-phpunit.result.cache
-.phpunit.result.cache
-coverage/
-build/
-dist/
-tmp/
-*.cache
-
-# Tests / coverage
-/.phpunit.result.cache
+# === Tests & coverage ===
+/var/test/
 /coverage/
+/.phpunit.result.cache
 
-# Fichiers temporaires Windows
-Thumbs.db
-ehthumbs.db
-
-# Fichiers temporaires d'IDE / outils
-/.vagrant/
-/.idea/
-/*.swp
-*~.nib
+# === Autres fichiers temporaires ===
+*.log
+*.cache
+*.tmp
+*.swp
 *.swo
-
-# Fichiers de déploiement / certificats locaux
-/.env.local.php
-/.symfony/
-.symfony/
-.symfony.lock
-
-# Secrets ou clés privées éventuelles
-*.key
-*.pem
-
-# Eviter d'ignorer (verrou) : ne pas ignorer composer.lock ni package-lock.json si tu veux reproduire install
-# (donc ces fichiers sont volontairement non listés)
-
-# Si tu as des fichiers que tu veux garder dans var/ (ex: .gitkeep), ajoute une exception explicite:
-# !/var/.gitkeep
