@@ -1,4 +1,14 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div style="display: flex; flex-direction: column; gap: .7rem;">
+    {{ form_row(form.slug) }}
+    {{ form_row(form.titre) }}
+    {{ form_row(form.corps) }}
+    {{ form_row(form.publier) }}
+</div>
+
+<div style="margin-top: 1.2rem; display: flex; justify-content: flex-start;">
+    <button class="btn btn-primary">
+        {{ button_label|default('Enregistrer') }}
+    </button>
+</div>
 {{ form_end(form) }}

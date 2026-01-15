@@ -42,7 +42,7 @@ final class ContenuController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_contenu_show', methods: ['GET'])]
+    #[Route('/informations/{id}', name: 'app_contenu_show', methods: ['GET'])]
     public function show(Contenu $contenu): Response
     {
         return $this->render('contenu/show.html.twig', [

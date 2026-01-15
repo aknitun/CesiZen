@@ -22,6 +22,17 @@ final class ExerciceRespirationController extends AbstractController
         ]);
     }
 
+    #[Route('/jouer', name: 'app_exercice_respiration_play', methods: ['GET'])]
+    public function play(ExerciceRespirationRepository $exerciceRespirationRepository): Response
+    {
+        $exercices = $exerciceRespirationRepository->findBy(['publier' => true]);
+
+        return $this->render('exercice_respiration/play.html.twig', [
+            'exercices' => $exercices,
+            'isLoggedIn' => $this->getUser() !== null,
+        ]);
+    }
+
     #[Route('/new', name: 'app_exercice_respiration_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -39,14 +50,6 @@ final class ExerciceRespirationController extends AbstractController
         return $this->render('exercice_respiration/new.html.twig', [
             'exercice_respiration' => $exerciceRespiration,
             'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_exercice_respiration_show', methods: ['GET'])]
-    public function show(ExerciceRespiration $exerciceRespiration): Response
-    {
-        return $this->render('exercice_respiration/show.html.twig', [
-            'exercice_respiration' => $exerciceRespiration,
         ]);
     }
 

@@ -1,14 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Inscription</h1>
+{% block title %}Inscription – CesiZen{% endblock %}
 
-    {{ form_start(registrationForm) }}
-    {{ form_row(registrationForm.email) }}
-    {{ form_row(registrationForm.nom) }}
-    {{ form_row(registrationForm.prenom) }}
-    {{ form_row(registrationForm.password) }}
-    {{ form_errors(registrationForm) }}
-    <button class="btn btn-primary">Créer mon compte</button>
-    {{ form_end(registrationForm) }}
+{% block body %}
+    <section style="max-width: 480px; margin: 0 auto;">
+        <h1 style="margin: 0 0 1.25rem;">Inscription</h1>
+
+        <div style="
+            background: var(--white);
+            border-radius: 1rem;
+            padding: 1.5rem 1.75rem;
+            box-shadow:
+                0 10px 24px rgba(15, 23, 42, 0.10),
+                0 0 0 1px rgba(148, 163, 184, 0.25);
+        ">
+            {{ form_start(registrationForm) }}
+            <div style="display: flex; flex-direction: column; gap: .7rem;">
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.nom) }}
+                {{ form_row(registrationForm.prenom) }}
+                {{ form_row(registrationForm.password) }}
+            </div>
+
+            {# Erreurs globales du formulaire #}
+            {% if form_errors(registrationForm) is not empty %}
+                <div style="margin-top: .8rem; color: #b91c1c; font-size: .9rem;">
+                    {{ form_errors(registrationForm) }}
+                </div>
+            {% endif %}
+
+            <div style="margin-top: 1.4rem; display: flex; justify-content: flex-end;">
+                <button class="btn btn-primary">
+                    Créer mon compte
+                </button>
+            </div>
+            {{ form_end(registrationForm) }}
+        </div>
+    </section>
 {% endblock %}

@@ -1,0 +1,43 @@
+﻿{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte – CesiZen{% endblock %}
+
+{% block body %}
+    <section style="max-width: 640px; margin: 0 auto;">
+        <h1 style="margin: 0 0 1.25rem;">Mon compte</h1>
+
+        <div style="
+            background: var(--white);
+            border-radius: 1rem;
+            padding: 1.5rem 1.75rem;
+            box-shadow:
+                0 10px 24px rgba(15, 23, 42, 0.10),
+                0 0 0 1px rgba(148, 163, 184, 0.25);
+        ">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem;">
+                <div class="user-avatar">
+                    {{ app.user.prenom|first|upper ~ app.user.nom|first|upper }}
+                </div>
+                <div>
+                    <h2 style="margin: 0;">{{ app.user.prenom }} {{ app.user.nom }}</h2>
+                    <p style="margin: .1rem 0 0; font-size: .9rem; color: var(--text-muted);">
+                        {{ app.user.email }}
+                    </p>
+                </div>
+            </div>
+
+            <div style="border-top: 1px solid rgba(226, 232, 240, 0.9); padding-top: 1rem;">
+                <p><strong>Prénom :</strong> {{ app.user.prenom }}</p>
+                <p><strong>Nom :</strong> {{ app.user.nom }}</p>
+                <p><strong>Email :</strong> {{ app.user.email }}</p>
+                {# Ajoute ici d'autres champs si tu en as sur ton User #}
+            </div>
+
+            <div style="margin-top: 1.4rem; display: flex; justify-content: flex-end;">
+                <a href="{{ path('app_user_edit') }}" class="btn btn-primary">
+                    Modifier mon profil
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}
