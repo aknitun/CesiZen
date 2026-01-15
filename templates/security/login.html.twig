@@ -1,38 +1,101 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion – CesiZen{% endblock %}
 
 {% block body %}
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+    <section style="max-width: 480px; margin: 0 auto;">
+        <h1 style="margin: 0 0 1.25rem;">Connexion</h1>
 
         {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ logout_path() }}">Logout</a>
+            <div style="
+                margin-bottom: 1rem;
+                font-size: .9rem;
+                color: var(--text-muted);
+            ">
+                Vous êtes déjà connecté en tant que <strong>{{ app.user.userIdentifier }}</strong>.
+                <a href="{{ logout_path() }}" class="btn btn-ghost" style="margin-left: .5rem;">
+                    Déconnexion
+                </a>
             </div>
         {% endif %}
 
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="username">Email</label>
-        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-        <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+        <div style="
+            background: var(--white);
+            border-radius: 1rem;
+            padding: 1.5rem 1.75rem;
+            box-shadow:
+                0 10px 24px rgba(15, 23, 42, 0.10),
+                0 0 0 1px rgba(148, 163, 184, 0.25);
+        ">
+            <form method="post">
+                {% if error %}
+                    <div style="
+                        margin-bottom: .8rem;
+                        padding: .6rem .75rem;
+                        border-radius: .6rem;
+                        background: #fee2e2;
+                        color: #b91c1c;
+                        font-size: .9rem;
+                    ">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
 
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
+                <div style="display: flex; flex-direction: column; gap: .7rem;">
+                    <div>
+                        <label for="username" style="display:block; font-size:.9rem; margin-bottom:.2rem;">
+                            Email
+                        </label>
+                        <input
+                                type="email"
+                                value="{{ last_username }}"
+                                name="_username"
+                                id="username"
+                                autocomplete="email"
+                                required
+                                autofocus
+                                style="width: 100%; padding: .45rem .55rem; border-radius: .6rem; border: 1px solid #cbd5f5;"
+                        >
+                    </div>
 
-            <div class="checkbox mb-3">
-                <input type="checkbox" name="_remember_me" id="_remember_me">
-                <label for="_remember_me">Remember me</label>
-            </div>
-        #}
+                    <div>
+                        <label for="password" style="display:block; font-size:.9rem; margin-bottom:.2rem;">
+                            Mot de passe
+                        </label>
+                        <input
+                                type="password"
+                                name="_password"
+                                id="password"
+                                autocomplete="current-password"
+                                required
+                                style="width: 100%; padding: .45rem .55rem; border-radius: .6rem; border: 1px solid #cbd5f5;"
+                        >
+                    </div>
+                </div>
 
-        <button class="btn btn-lg btn-primary" type="submit">
-            Sign in
-        </button>
-    </form>
+                <input
+                        type="hidden"
+                        name="_csrf_token"
+                        data-controller="csrf-protection"
+                        value="{{ csrf_token('authenticate') }}"
+                >
+
+                {# Option remember me (à activer dans le firewall Symfony si besoin) #}
+                {#
+                <div style="margin-top: .8rem; font-size: .9rem;">
+                    <label>
+                        <input type="checkbox" name="_remember_me">
+                        Se souvenir de moi
+                    </label>
+                </div>
+                #}
+
+                <div style="margin-top: 1.4rem; display: flex; justify-content: flex-end;">
+                    <button class="btn btn-primary" type="submit">
+                        Se connecter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
 {% endblock %}

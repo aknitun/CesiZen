@@ -1,0 +1,462 @@
+﻿{% extends 'base.html.twig' %}
+
+{% block title %}Exercice de respiration – CesiZen{% endblock %}
+
+{% block body %}
+    <section style="max-width: 800px; margin: 0 auto;">
+        <h1 style="margin: 0 0 1.25rem;">Exercice de respiration</h1>
+
+        <p style="margin: 0 0 1.5rem; font-size: .95rem; color: var(--text-muted);">
+            L’exercice se base sur la cohérence cardiaque autour de trois valeurs :
+            <strong>inspiration</strong>, <strong>apnée</strong> et <strong>expiration</strong>.
+            Choisissez un rythme puis appuyez sur <strong>Play</strong>.
+        </p>
+
+        {# --- Liste des exercices disponibles (depuis la BDD) --- #}
+        {% if exercices is empty %}
+            <p>Aucun exercice de respiration n’est disponible pour le moment.</p>
+        {% else %}
+            <div style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: .75rem;
+                margin-bottom: 1.5rem;
+                max-width: 640px;
+            ">
+                {% for exercice in exercices %}
+                    <button
+                            type="button"
+                            class="btn exercice-card"
+                            data-id="{{ exercice.id }}"
+                            data-nom="{{ exercice.nom }}"
+                            data-inspi="{{ exercice.dureeInspiration }}"
+                            data-apnee="{{ exercice.dureeApnee }}"
+                            data-exp="{{ exercice.dureeExpiration }}"
+                            style="
+                            justify-content: flex-start;
+                            text-align: left;
+                            background: white;
+                            box-shadow:
+                                0 4px 10px rgba(15, 23, 42, 0.05),
+                                0 0 0 1px rgba(148, 163, 184, 0.16);
+                            border-radius: .65rem;
+                            padding: .55rem .7rem;
+                            font-size: .85rem;
+                            max-width: 200px;
+                        "
+                    >
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; width:100%; gap:.45rem;">
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: .05rem;">
+                                    {{ exercice.nom }}
+                                </div>
+                                <div style="font-size: .78rem; color: var(--text-muted); line-height: 1.2;">
+                                    Insp. {{ exercice.dureeInspiration }}s<br>
+                                    Apnée {{ exercice.dureeApnee }}s<br>
+                                    Exp. {{ exercice.dureeExpiration }}s
+                                </div>
+                            </div>
+                            <div
+                                    class="exercice-radio"
+                                    style="
+                                    width: 14px;
+                                    height: 14px;
+                                    border-radius: 999px;
+                                    border: 2px solid rgba(148, 163, 184, 0.9);
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    flex-shrink:0;
+                                "
+                            >
+                                <span
+                                        class="exercice-radio-dot"
+                                        style="
+                                        width: 7px;
+                                        height: 7px;
+                                        border-radius: 999px;
+                                        background: transparent;
+                                    "
+                                ></span>
+                            </div>
+                        </div>
+                    </button>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {# --- Zone d'exercice : cercle + bouton Play/Stop --- #}
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 1.4rem;">
+            <div
+                    id="breath-circle-wrapper"
+                    style="
+                    position: relative;
+                    width: 190px;
+                    height: 190px;
+                    border-radius: 999px;
+                    background:
+                        conic-gradient(#38bdf8 0deg, #4ade80 0deg, rgba(148, 163, 184, 0.18) 0deg 360deg);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow:
+                        0 20px 40px rgba(15, 23, 42, 0.25),
+                        0 0 0 1px rgba(148, 163, 184, 0.3);
+                    transition: box-shadow .25s ease-out;
+                "
+            >
+                {# marqueurs de transition (bien visibles) #}
+                <div
+                        id="marker-inspi"
+                        style="
+                        position: absolute;
+                        width: 6px;
+                        height: 20px;
+                        background: rgba(59, 130, 246, 0.9);
+                        border-radius: 999px;
+                        top: 0;
+                        left: 50%;
+                        transform-origin: 50% 95px;
+                        transform: translateX(-50%) rotate(0deg);
+                        opacity: 0;
+                        transition: opacity .25s ease-out;
+                    "
+                ></div>
+                <div
+                        id="marker-apnea"
+                        style="
+                        position: absolute;
+                        width: 6px;
+                        height: 20px;
+                        background: rgba(59, 130, 246, 0.9);
+                        border-radius: 999px;
+                        top: 0;
+                        left: 50%;
+                        transform-origin: 50% 95px;
+                        transform: translateX(-50%) rotate(0deg);
+                        opacity: 0;
+                        transition: opacity .25s ease-out;
+                    "
+                ></div>
+
+                <div
+                        id="breath-circle"
+                        style="
+                        width: 150px;
+                        height: 150px;
+                        border-radius: 999px;
+                        background: radial-gradient(circle at 30% 30%, #e0f2fe, #bfdbfe);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: transform .6s ease-in-out, background .3s ease-out;
+                    "
+                >
+                    <div style="text-align: center;">
+                        <div id="breath-phase" style="font-size: 1.1rem; font-weight: 600; margin-bottom: .25rem;">
+                            Prêt ?
+                        </div>
+                        <div id="breath-counter" style="font-size: 1.8rem; font-weight: 700;">
+                            0
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="font-size: .9rem; color: var(--text-muted);">
+                Rythme actuel :
+                <span id="current-preset-label">–</span>
+                (<span id="current-preset-detail">sélectionnez un exercice ci-dessus</span>)
+            </div>
+
+            <div style="display: flex; gap: .75rem; margin-top: .5rem;">
+                <button id="breath-toggle" class="btn btn-primary" type="button">
+                    Play
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        (function () {
+            const IS_LOGGED_IN = {{ isLoggedIn ? 'true' : 'false' }};
+
+            let current = null;
+            let timer = null;
+            let running = false;
+
+            let elapsed = 0;   // secondes écoulées dans le cycle courant
+            let total = 0;     // durée totale du cycle (inspi + apnée + expire)
+            let sessionStartTs = null; // timestamp de début (en secondes Unix)
+            let endingByCycle = false; // true quand stop() est appelé après un cycle complet
+
+            const wrapper      = document.getElementById('breath-circle-wrapper');
+            const circle       = document.getElementById('breath-circle');
+            const phaseEl      = document.getElementById('breath-phase');
+            const counterEl    = document.getElementById('breath-counter');
+            const toggleBtn    = document.getElementById('breath-toggle');
+            const presetLabel  = document.getElementById('current-preset-label');
+            const presetDetail = document.getElementById('current-preset-detail');
+            const markerInspi  = document.getElementById('marker-inspi');
+            const markerApnea  = document.getElementById('marker-apnea');
+
+            const TICK_MS = 200; // 0.2s pour une progression fluide
+
+            // Sélection d'un exercice (style "radio")
+            document.querySelectorAll('.exercice-card').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    current = {
+                        id: parseInt(btn.getAttribute('data-id'), 10),
+                        nom: btn.getAttribute('data-nom'),
+                        inspi: parseInt(btn.getAttribute('data-inspi'), 10),
+                        apnea: parseInt(btn.getAttribute('data-apnee'), 10),
+                        exp: parseInt(btn.getAttribute('data-exp'), 10),
+                    };
+
+                    presetLabel.textContent = current.nom;
+                    presetDetail.textContent =
+                        `Inspiration : ${current.inspi}s – Apnée : ${current.apnea}s – Expiration : ${current.exp}s`;
+
+                    // reset état
+                    stop(false);
+
+                    // effet visuel sur les cartes
+                    document.querySelectorAll('.exercice-card').forEach(b => {
+                        b.style.outline = 'none';
+                        b.style.background = 'white';
+                        const dot = b.querySelector('.exercice-radio-dot');
+                        if (dot) dot.style.background = 'transparent';
+                    });
+                    btn.style.outline = '2px solid #0ea5e9';
+                    btn.style.background = 'rgba(239, 246, 255, 0.95)';
+                    const dot = btn.querySelector('.exercice-radio-dot');
+                    if (dot) dot.style.background = '#0ea5e9';
+
+                    // mettre à jour les marqueurs de transition
+                    updateMarkers();
+                });
+            });
+
+            function updateMarkers() {
+                if (!current) {
+                    markerInspi.style.opacity = '0';
+                    markerApnea.style.opacity = '0';
+                    return;
+                }
+
+                total = current.inspi + current.apnea + current.exp;
+                if (total <= 0) {
+                    markerInspi.style.opacity = '0';
+                    markerApnea.style.opacity = '0';
+                    return;
+                }
+
+                const degInspi = 360 * (current.inspi / total);
+                const degApnea = 360 * ((current.inspi + current.apnea) / total);
+
+                markerInspi.style.transform = `translateX(-50%) rotate(${degInspi}deg)`;
+                markerApnea.style.transform = `translateX(-50%) rotate(${degApnea}deg)`;
+
+                markerInspi.style.opacity = '1';
+                markerApnea.style.opacity = current.apnea > 0 ? '1' : '0';
+            }
+
+            // Couleurs très douces
+            function coloredGradientForPhase(phase, deg) {
+                const baseStart = '#38bdf8'; // bleu doux
+                const baseMid   = '#4ade80'; // vert doux
+
+                let phaseTint;
+                if (phase === 'inspire') {
+                    phaseTint = '#38bdf8';
+                } else if (phase === 'apnea') {
+                    phaseTint = '#a5f3fc';
+                } else {
+                    phaseTint = '#a5b4fc';
+                }
+
+                return `conic-gradient(
+                    ${baseStart} 0deg,
+                    ${baseMid} ${Math.max(deg - 20, 0)}deg,
+                    ${phaseTint} ${deg}deg,
+                    rgba(148,163,184,0.18) ${deg}deg 360deg
+                )`;
+            }
+
+            function circleBackgroundForPhase(phase) {
+                if (phase === 'inspire') {
+                    return 'radial-gradient(circle at 30% 30%, #e0f2fe, #bae6fd)';
+                }
+                if (phase === 'apnea') {
+                    return 'radial-gradient(circle at 30% 30%, #ecfccb, #bbf7d0)';
+                }
+                return 'radial-gradient(circle at 30% 30%, #e0e7ff, #c7d2fe)';
+            }
+
+            function resetVisual() {
+                phaseEl.textContent = 'Prêt ?';
+                counterEl.textContent = '0';
+                wrapper.style.background =
+                    'conic-gradient(#38bdf8 0deg, #4ade80 0deg, rgba(148, 163, 184, 0.18) 0deg 360deg)';
+                circle.style.transform = 'scale(1.0)';
+                circle.style.background =
+                    'radial-gradient(circle at 30% 30%, #e0f2fe, #bfdbfe)';
+            }
+
+            async function saveSession(completed) {
+                if (!current || !sessionStartTs) {
+                    return;
+                }
+
+                if (!IS_LOGGED_IN) {
+                    console.warn('Session non enregistrée : utilisateur non connecté.');
+                    sessionStartTs = null;
+                    return;
+                }
+
+                const endTs = Math.floor(Date.now() / 1000);
+
+                try {
+                    const response = await fetch('{{ path('app_session_exercice_create') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            exerciceId: current.id,
+                            start: sessionStartTs,
+                            end: endTs,
+                            completed: completed, // true = terminee, false = interrompue
+                        }),
+                    });
+
+                    const json = await response.json();
+                    console.log('Session API response', response.status, json);
+                } catch (e) {
+                    console.error('Erreur enregistrement session', e);
+                } finally {
+                    sessionStartTs = null;
+                }
+            }
+
+            function updateUIFromElapsed() {
+                if (!current || total === 0) {
+                    resetVisual();
+                    return;
+                }
+
+                // t dans le cycle actuel (0 → total)
+                let t = elapsed % total;
+
+                const tInspiEnd = current.inspi;
+                const tApneaEnd = current.inspi + current.apnea;
+                const tExpEnd   = total;
+
+                let phase = 'expire';
+                let remaining = 0;
+
+                if (t < tInspiEnd) {
+                    phase = 'inspire';
+                    remaining = Math.ceil(tInspiEnd - t);
+                    circle.style.transform = 'scale(1.06)';
+                } else if (t < tApneaEnd) {
+                    phase = 'apnea';
+                    remaining = Math.ceil(tApneaEnd - t);
+                    circle.style.transform = 'scale(1.0)';
+                } else {
+                    phase = 'expire';
+                    remaining = Math.ceil(tExpEnd - t);
+                    circle.style.transform = 'scale(0.94)';
+                }
+
+                phaseEl.textContent =
+                    phase === 'inspire' ? 'Inspirez' :
+                        (phase === 'apnea' ? 'Apnée' : 'Expirez');
+                counterEl.textContent = remaining;
+
+                // progression globale du cycle (0 → 360°)
+                const ratio = t / total;
+                const deg = ratio * 360;
+
+                wrapper.style.background = coloredGradientForPhase(phase, deg);
+                circle.style.background = circleBackgroundForPhase(phase);
+            }
+
+            function tick() {
+                if (!running || !current) return;
+
+                elapsed += TICK_MS / 1000; // secondes
+                updateUIFromElapsed();
+
+                // Fin de cycle naturellement : session "terminée"
+                if (elapsed >= total && total > 0) {
+                    endingByCycle = true;      // on marque que la fin vient du cycle
+                    saveSession(true);         // terminee
+                    stop();                    // stop() NE doit PAS enregistrer interrompue dans ce cas
+                }
+            }
+
+            function start() {
+                if (!current) {
+                    alert('Sélectionnez d’abord un exercice de respiration.');
+                    return;
+                }
+                if (running) return;
+
+                total = current.inspi + current.apnea + current.exp;
+                if (total <= 0) return;
+
+                running = true;
+                elapsed = 0;
+                sessionStartTs = Math.floor(Date.now() / 1000);
+                endingByCycle = false; // nouveau départ
+
+                toggleBtn.textContent = 'Stop';
+                toggleBtn.classList.remove('btn-primary');
+                toggleBtn.classList.add('btn-ghost');
+
+                wrapper.style.boxShadow =
+                    '0 24px 50px rgba(15, 23, 42, 0.28), 0 0 0 2px rgba(56, 189, 248, 0.5)';
+
+                updateUIFromElapsed();
+                timer = setInterval(tick, TICK_MS);
+            }
+
+            function stop(resetCircle = true) {
+                if (timer) {
+                    clearInterval(timer);
+                    timer = null;
+                }
+
+                // Si on stop en cours de cycle (et pas suite à une fin naturelle),
+                // on enregistre comme "interrompue"
+                if (!endingByCycle && running && current && sessionStartTs) {
+                    saveSession(false);
+                }
+
+                running = false;
+                endingByCycle = false; // on reset le flag
+
+                toggleBtn.textContent = 'Play';
+                toggleBtn.classList.add('btn-primary');
+                toggleBtn.classList.remove('btn-ghost');
+
+                if (resetCircle) {
+                    elapsed = 0;
+                    total = 0;
+                    wrapper.style.boxShadow =
+                        '0 20px 40px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(148, 163, 184, 0.3)';
+                    resetVisual();
+                }
+            }
+
+            toggleBtn.addEventListener('click', () => {
+                if (running) {
+                    stop();
+                } else {
+                    start();
+                }
+            });
+        })();
+    </script>
+{% endblock %}

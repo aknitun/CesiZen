@@ -1,38 +1,57 @@
-{% extends 'base.html.twig' %}
+﻿{% extends 'base.html.twig' %}
 
-{% block title %}Contenu{% endblock %}
+{% block title %}{{ contenu.titre }} – Informations – CesiZen{% endblock %}
 
 {% block body %}
-    <h1>Contenu</h1>
+    <section style="max-width: 800px; margin: 0 auto;">
+        <a href="{{ path('app_contenu_index') }}"
+           style="
+               display:inline-flex;
+               align-items:center;
+               gap:.45rem;
+               font-size:.85rem;
+               color:#2563eb;
+               text-decoration:none;
+               padding:.29rem .8rem .29rem .56rem;
+               border-radius:.999rem;
+               border: 1px solid #d1d5db;
+               background: #f8fafc;
+               font-weight: 500;
+               transition: background .16s, border .16s, color .15s;
+               margin-bottom: 1.1rem;
+           "
+           onmouseover="this.style.background='#e0e7ef';this.style.textDecoration='underline'"
+           onmouseout="this.style.background='#f8fafc';this.style.textDecoration='none'">
+            <span style="font-size:.98em;">←</span>
+            <span>Retour à la liste</span>
+        </a>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ contenu.id }}</td>
-            </tr>
-            <tr>
-                <th>Slug</th>
-                <td>{{ contenu.slug }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ contenu.titre }}</td>
-            </tr>
-            <tr>
-                <th>Corps</th>
-                <td>{{ contenu.corps }}</td>
-            </tr>
-            <tr>
-                <th>Publier</th>
-                <td>{{ contenu.publier ? 'Yes' : 'No' }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <article style="
+            background:#ffffff;
+            border-radius: 1rem;
+            padding: 1.25rem 1.4rem;
+            box-shadow:
+                0 12px 28px rgba(15,23,42,0.08),
+                0 0 0 1px rgba(148,163,184,0.22);
+        ">
+            <h1 style="margin:0 0 .75rem; font-size:1.4rem; color:#0f172a;">
+                {{ contenu.titre }}
+            </h1>
 
-    <a href="{{ path('app_contenu_index') }}">back to list</a>
+            <div style="
+                font-size:.95rem;
+                line-height:1.7;
+                color:#111827;
+                white-space: pre-line;
+            ">
+                {{ contenu.corps }}
+            </div>
 
-    <a href="{{ path('app_contenu_edit', {'id': contenu.id}) }}">edit</a>
-
-    {{ include('contenu/_delete_form.html.twig') }}
+            <div style="margin-top:1.2rem; display:flex; justify-content:flex-end;">
+                <a href="{{ path('app_contenu_edit', {id: contenu.id}) }}" class="btn btn-ghost" style="font-size:.85rem;">
+                    Modifier
+                </a>
+            </div>
+        </article>
+    </section>
 {% endblock %}

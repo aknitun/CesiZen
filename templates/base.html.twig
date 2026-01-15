@@ -1,17 +1,66 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{% block title %}CesiZen{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<div class="app-wrapper">
+    <header class="app-header">
+        <div class="brand">
+            <a href="{{ path('app_home') }}" class="brand-link">
+                <div class="brand-logo">
+                    <span>C</span>
+                </div>
+                <div class="brand-name">CesiZen</div>
+            </a>
+        </div>
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
+        <nav class="main-nav">
+            <a href="{{ path('app_contenu_index') }}" class="nav-link">Informations</a>
+            <a href="{{ path('app_exercice_respiration_play') }}" class="nav-link">Exercice de respiration</a>
+            {% if app.user %}
+                <a href="{{ path('app_session_exercice_history') }}" class="nav-link">
+                    Voir mon historique
+                </a>
+            {% endif %}
+            {# Ne pas ajouter les autres modules optionnels ici #}
+        </nav>
+
+        <div class="header-actions">
+            {% if app.user %}
+                <a href="{{ path('app_user_show') }}" style="text-decoration: none;">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            {{ app.user.prenom|first|upper ~ app.user.nom|first|upper }}
+                        </div>
+                        <div class="user-text">
+                            <div class="user-name">
+                                {{ app.user.prenom }} {{ app.user.nom }}
+                            </div>
+                            <div class="user-role">
+                                Mon compte
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ path('app_logout') }}" class="btn btn-primary btn-small">Déconnexion</a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="btn btn-ghost">Connexion</a>
+                <a href="{{ path('app_register') }}" class="btn btn-primary">Inscription</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="app-main">
         {% block body %}{% endblock %}
-    </body>
+    </main>
+
+    <footer class="app-footer">
+        <div>© {{ "now"|date("Y") }} – CesiZen</div>
+    </footer>
+</div>
+</body>
 </html>

@@ -1,13 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Contenu{% endblock %}
+{% block title %}Modifier un contenu – CesiZen{% endblock %}
 
 {% block body %}
-    <h1>Edit Contenu</h1>
+    <section style="max-width: 800px; margin: 0 auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.25rem;">
+            <h1 style="margin: 0;">Modifier un contenu</h1>
 
-    {{ include('contenu/_form.html.twig', {'button_label': 'Update'}) }}
+        </div>
 
-    <a href="{{ path('app_contenu_index') }}">back to list</a>
+        <div style="
+            background: var(--white);
+            border-radius: 1rem;
+            padding: 1.5rem 1.75rem;
+            box-shadow:
+                0 10px 24px rgba(15, 23, 42, 0.10),
+                0 0 0 1px rgba(148, 163, 184, 0.25);
+        ">
+            {{ include('contenu/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
-    {{ include('contenu/_delete_form.html.twig') }}
+            <div style="margin-top: 1.4rem; display: flex; justify-content: space-between; align-items: center; gap: .75rem;">
+                {{ include('contenu/_delete_form.html.twig') }}
+
+                <a href="{{ path('app_contenu_index') }}" class="btn btn-ghost">
+                    Annuler
+                </a>
+            </div>
+        </div>
+    </section>
 {% endblock %}

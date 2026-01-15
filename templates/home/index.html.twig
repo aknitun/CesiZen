@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CesiZen{% endblock %}
+
+{% block body_class %}home-page{% endblock %}
+
+{% block body %}
+    <section class="hero-center">
+        <div class="hero-logo">
+            <img src="{{ asset('images/cesizen.webp') }}" alt="Logo CesiZen">
+        </div>
+        <p class="hero-text">
+            <span class="placeholder-text">
+                CesiZen est une application dédiée à la santé mentale, qui aide à mieux comprendre
+                et gérer son stress au quotidien. Elle propose des exercices de respiration adaptés à chacun.
+            </span>
+        </p>
+    </section>
+{% endblock %}
