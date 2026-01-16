@@ -21,10 +21,8 @@
         <nav class="main-nav">
             <a href="{{ path('app_contenu_index') }}" class="nav-link">Informations</a>
             <a href="{{ path('app_exercice_respiration_play') }}" class="nav-link">Exercice de respiration</a>
-            {% if app.user %}
-                <a href="{{ path('app_session_exercice_history') }}" class="nav-link">
-                    Voir mon historique
-                </a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin') }}" class="nav-link">Administration</a>
             {% endif %}
             {# Ne pas ajouter les autres modules optionnels ici #}
         </nav>

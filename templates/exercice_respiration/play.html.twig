@@ -4,7 +4,16 @@
 
 {% block body %}
     <section style="max-width: 800px; margin: 0 auto;">
-        <h1 style="margin: 0 0 1.25rem;">Exercice de respiration</h1>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.25rem;">
+            <h1 style="margin: 0;">Exercice de respiration</h1>
+
+            {# Si l'utilisateur est connecté, on affiche un bouton vers son historique à droite du titre #}
+            {% if app.user %}
+                <a href="{{ path('app_session_exercice_history') }}" class="btn btn-primary">
+                    Voir mon historique
+                </a>
+            {% endif %}
+        </div>
 
         <p style="margin: 0 0 1.5rem; font-size: .95rem; color: var(--text-muted);">
             L’exercice se base sur la cohérence cardiaque autour de trois valeurs :
