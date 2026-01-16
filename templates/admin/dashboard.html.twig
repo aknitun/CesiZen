@@ -1,0 +1,34 @@
+﻿{# templates/admin/dashboard.html.twig #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_content %}
+    <style>
+        .custom-admin-dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: left;
+            font-size: 1.1rem; /* texte un peu plus grand */
+            line-height: 1.6;  /* plus lisible */
+        }
+
+        .custom-admin-dashboard h1 {
+            font-size: 3rem;   /* titre plus grand */
+            margin-bottom: 1rem;
+        }
+    </style>
+
+    <div class="custom-admin-dashboard">
+        <h1>Bienvenue dans l’administration</h1>
+
+        <p>
+            Cette page est le point d’entrée de l’espace d’administration du site.
+            Depuis ce tableau de bord, vous pouvez accéder aux différentes sections
+            pour gérer les contenus, les utilisateurs et les autres fonctionnalités
+            réservées aux administrateurs.
+        </p>
+
+        <ul>
+            <li>Utilisez le menu de gauche pour naviguer entre les différentes rubriques.</li>
+        </ul>
+    </div>
+{% endblock %}
