@@ -47,11 +47,14 @@
                 {{ contenu.corps }}
             </div>
 
-            <div style="margin-top:1.2rem; display:flex; justify-content:flex-end;">
-                <a href="{{ path('app_contenu_edit', {id: contenu.id}) }}" class="btn btn-ghost" style="font-size:.85rem;">
-                    Modifier
-                </a>
-            </div>
+            {% if is_granted('ROLE_ADMIN') %}
+                <div style="margin-top:1.2rem; display:flex; justify-content:flex-end;">
+                    <a href="{{ path('app_contenu_edit', {id: contenu.id}) }}" class="btn btn-ghost" style="font-size:.85rem;">
+                        Modifier
+                    </a>
+                </div>
+            {% endif %}
+
         </article>
     </section>
 {% endblock %}
