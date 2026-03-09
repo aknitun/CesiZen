@@ -40,6 +40,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $actif = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $reponseQuestionSecrete = null;
+
     /**
      * @var Collection<int, SessionExercice>
      */
@@ -150,6 +153,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setActif(bool $actif): static
     {
         $this->actif = $actif;
+
+        return $this;
+    }
+
+    public function getReponseQuestionSecrete(): ?string
+    {
+        return $this->reponseQuestionSecrete;
+    }
+
+    public function setReponseQuestionSecrete(?string $reponseQuestionSecrete): static
+    {
+        $this->reponseQuestionSecrete = $reponseQuestionSecrete;
 
         return $this;
     }
