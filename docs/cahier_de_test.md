@@ -22,14 +22,14 @@
 
 ## Connexion
 
-| ID               | Titre | Pré-conditions | Procédure | Résultat Attendu |
-|------------------|-------|----------------|-----------|------------------|
-| **TEST-CONN-01** | **Connexion** | Compte `test@exemple.com` créé | 1. Aller sur `/login`<br>2. Saisir email et mot de passe corrects<br>3. Valider | Utilisateur connecté, accès aux fonctionnalités réservées |
-| **TEST-CONN-02** | **Connexion - Email vide** | Aucune | 1. Aller sur `/login`<br>2. Laisser email vide<br>3. Saisir un mot de passe quelconque<br>4. Valider | Message d’erreur : email obligatoire (ou erreur de connexion) |
-| **TEST-CONN-03** | **Connexion - Mot de passe vide** | Aucune | 1. Aller sur `/login`<br>2. Saisir un email valide<br>3. Laisser mot de passe vide<br>4. Valider | Message d’erreur : mot de passe obligatoire (ou erreur de connexion) |
+| ID               | Titre | Pré-conditions | Procédure | Résultat Attendu                                                       |
+|------------------|-------|----------------|-----------|------------------------------------------------------------------------|
+| **TEST-CONN-01** | **Connexion** | Compte `test@exemple.com` créé | 1. Aller sur `/login`<br>2. Saisir email et mot de passe corrects<br>3. Valider | Utilisateur connecté, accès aux fonctionnalités réservées              |
+| **TEST-CONN-02** | **Connexion - Email vide** | Aucune | 1. Aller sur `/login`<br>2. Laisser email vide<br>3. Saisir un mot de passe quelconque<br>4. Valider | Message d’erreur : email obligatoire (ou erreur de connexion)          |
+| **TEST-CONN-03** | **Connexion - Mot de passe vide** | Aucune | 1. Aller sur `/login`<br>2. Saisir un email valide<br>3. Laisser mot de passe vide<br>4. Valider | Message d’erreur : mot de passe obligatoire (ou erreur de connexion)   |
 | **TEST-CONN-04** | **Connexion - Mauvais mot de passe** | Compte `test@exemple.com` existe | 1. Aller sur `/login`<br>2. Saisir `test@exemple.com`<br>3. Saisir un mauvais mot de passe<br>4. Valider | Connexion refusée, message d’erreur (sans révéler si le compte existe) |
-| **TEST-CONN-05** | **Connexion - Email inexistant** | Aucun compte avec `inconnu@exemple.com` | 1. Aller sur `/login`<br>2. Saisir `inconnu@exemple.com` + un mot de passe<br>3. Valider | Connexion refusée, message d’erreur générique |
-| **TEST-CONN-06** | **Connexion - Déjà connecté, accès à /login** | Utilisateur déjà connecté | 1. Se connecter<br>2. Aller manuellement sur `/login` | Redirection vers page pertinente (accueil / compte) ou page login inaccessible |
+| **TEST-CONN-05** | **Connexion - Email inexistant** | Aucun compte avec `inconnu@exemple.com` | 1. Aller sur `/login`<br>2. Saisir `inconnu@exemple.com` + un mot de passe<br>3. Valider | Connexion refusée, message d’erreur générique                          |
+| **TEST-CONN-06** | **Connexion - Déjà connecté, accès à /login** | Utilisateur déjà connecté | 1. Se connecter<br>2. Aller manuellement sur `/login` | Redirection vers page d'accueil                                        |
 
 ---
 
@@ -74,17 +74,17 @@
 
 ## Exercices / Respiration
 
-| ID              | Titre                                                             | Pré-conditions | Procédure                                                                                      | Résultat Attendu                                                              |
-|-----------------|-------------------------------------------------------------------|----------------|------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| **TEST-EXR-01** | **Exercice de Respiration - Accès page “Jouer”**                  | Utilisateur connecté + exercices publiés en base | 1. Aller sur `/exercice/respiration/jouer`                                                     | La page de lancement s’affiche (liste/choix des exercices visible)            |
-| **TEST-EXR-02** | **Exercice de Respiration - Lancer un exercice **                 | Utilisateur connecté + exercices publiés en base | 1. Aller sur `/exercice/respiration/jouer`<br>2. Choisir un exercice<br>3. Lancer              | L'exercice se lance (interface interactive), pas d’erreur                     |
-| **TEST-EXR-03** | **Exercice de Respiration - Lancer sans sélectionner d’exercice** | Utilisateur connecté + exercices publiés | 1. Aller sur `/exercice/respiration/jouer`<br>2. Cliquer “Lancer” sans sélection (si possible) | Un message indique qu’il faut sélectionner un exercice, aucun lancement       |
-| **TEST-EXR-04** | **Exercice de Respiration - Fin d’exercice (enregistrement)**     | Utilisateur connecté + exercice lançable | 1. Lancer un exercice<br>2. Aller jusqu’à la fin                                               | Une session est enregistrée (statut “terminé”) et visible dans l’historique   |
-| **TEST-EXR-05** | **Exercice de Respiration - Abandon**                            | Utilisateur connecté + exercice lançable | 1. Lancer un exercice<br>2. Stopper l'exercice                                                 | Session avec statut Interrompue                                               |
-| **TEST-EXR-06** | **Historique des Exercices (connecté)**                           | Utilisateur connecté | 1. Aller sur `/mes-exercices`                                                                  | Tableau affichant la liste des sessions (date, exercice, statut)              |
-| **TEST-EXR-07** | **Historique des Exercices - Liste vide**                         | Utilisateur connecté, n’a jamais terminé d’exercice | 1. Aller sur `/mes-exercices`                                                                  | Tableau vide + message “Aucune session”                      |
-| **TEST-EXR-08** | **Historique des Exercices - Utilisateur anonyme**                | Aucune | 1. Aller sur `/mes-exercices`                                                                  | Redirection sur `/login`                                 |
-| **TEST-EXR-09** | **Historique des Exercices - Ordre d’affichage**                  | Utilisateur connecté + plusieurs sessions existantes | 1. Aller sur `/mes-exercices`                                                                  | Les sessions sont triées de façon cohérente |
+| ID              | Titre                                                             | Pré-conditions | Procédure                                                                                      | Résultat Attendu                                                            |
+|-----------------|-------------------------------------------------------------------|----------------|------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| **TEST-EXR-01** | **Exercice de Respiration - Accès page “Jouer”**                  | Utilisateur connecté + exercices publiés en base | 1. Aller sur `/exercice/respiration/jouer`                                                     | La page de lancement s’affiche (liste/choix des exercices visible)          |
+| **TEST-EXR-02** | **Exercice de Respiration - Lancer un exercice **                 | Utilisateur connecté + exercices publiés en base | 1. Aller sur `/exercice/respiration/jouer`<br>2. Choisir un exercice<br>3. Lancer              | L'exercice se lance (interface interactive), pas d’erreur                   |
+| **TEST-EXR-03** | **Exercice de Respiration - Lancer sans sélectionner d’exercice** | Utilisateur connecté + exercices publiés | 1. Aller sur `/exercice/respiration/jouer`<br>2. Cliquer “Lancer” sans sélection (si possible) | Un message indique qu’il faut sélectionner un exercice, aucun lancement     |
+| **TEST-EXR-04** | **Exercice de Respiration - Fin d’exercice (enregistrement)**     | Utilisateur connecté + exercice lançable | 1. Lancer un exercice<br>2. Aller jusqu’à la fin                                               | Une session est enregistrée (statut “terminé”) et visible dans l’historique |
+| **TEST-EXR-05** | **Exercice de Respiration - Abandon**                            | Utilisateur connecté + exercice lançable | 1. Lancer un exercice<br>2. Stopper l'exercice                                                 | Dans l'historique des sessions, l'exercice apparaît comme interrompue       |
+| **TEST-EXR-06** | **Historique des Exercices (connecté)**                           | Utilisateur connecté | 1. Aller sur `/mes-exercices`                                                                  | Tableau affichant la liste des sessions (date, exercice, statut)            |
+| **TEST-EXR-07** | **Historique des Exercices - Liste vide**                         | Utilisateur connecté, n’a jamais terminé d’exercice | 1. Aller sur `/mes-exercices`                                                                  | Tableau vide + message “Aucune session”                                     |
+| **TEST-EXR-08** | **Historique des Exercices - Utilisateur anonyme**                | Aucune | 1. Aller sur `/mes-exercices`                                                                  | Redirection sur `/login`                                                    |
+| **TEST-EXR-09** | **Historique des Exercices - Ordre d’affichage**                  | Utilisateur connecté + plusieurs sessions existantes | 1. Aller sur `/mes-exercices`                                                                  | Les sessions sont triées de façon cohérente                                 |
 
 ---
 
@@ -116,10 +116,7 @@
 | **TEST-NAV-03** | **Accueil - Navigation vers Exercice respiration** | Aucune | 1. Aller sur `/`<br>2. Cliquer sur un lien/menu vers `/exercice/respiration/jouer` | Redirection vers `/exercice/respiration/jouer`, page accessible (ou redirection `/login` si protégé) |
 | **TEST-NAV-04** | **Accueil - Navigation vers Compte** | Aucune | 1. Aller sur `/`<br>2. Cliquer sur un lien/menu vers `/compte` | Si connecté : accès au profil. Si non connecté : redirection `/login` |
 | **TEST-NAV-05** | **Page inexistante - 404** | Aucune | 1. Aller sur `/page-qui-nexiste-pas` | Page 404 |
-| **TEST-NAV-06** | **Accès interdit - /admin sans droits (403 ou redirection)** | Utilisateur connecté avec rôle `ROLE_USER` (non admin) | 1. Se connecter avec un compte non admin<br>2. Aller sur `/admin` | Accès refusé : 403 ou redirection (selon config), pas d’accès au dashboard |
-| **TEST-NAV-07** | **Affichage du menu - utilisateur anonyme** | Non connecté | 1. Aller sur `/` | Le menu n’affiche pas les liens réservés (ex: Compte/Logout/Admin) |
-| **TEST-NAV-08** | **Affichage du menu - utilisateur connecté** | Utilisateur connecté `ROLE_USER` | 1. Se connecter<br>2. Aller sur `/` | Le menu affiche les liens utiles (Compte, Logout). Le lien Admin est absent |
-| **TEST-NAV-09** | **Affichage du menu - admin** | Utilisateur connecté `ROLE_ADMIN` | 1. Se connecter en admin<br>2. Aller sur `/` | Le menu affiche un accès à l’admin et les liens fonctionnent |
+| **TEST-NAV-06** | **Accès interdit - /admin sans droits (403)** | Utilisateur connecté avec rôle `ROLE_USER` (non admin) | 1. Se connecter avec un compte non admin<br>2. Aller sur `/admin` | Accès refusé : 403, pas d’accès au dashboard |
 
 ---
 
