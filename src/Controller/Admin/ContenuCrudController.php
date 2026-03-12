@@ -22,7 +22,6 @@ class ContenuCrudController extends AbstractCrudController
             IdField::new('id', 'ID')
                 ->hideOnForm(),
 
-            TextField::new('slug', 'Slug'),
 
             TextField::new('titre', 'Titre'),
 

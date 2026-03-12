@@ -18,13 +18,40 @@
             </a>
         </div>
 
-        <nav class="main-nav">
+        {# Bouton burger (visible seulement en mobile via CSS) #}
+        <button
+                class="nav-toggle"
+                type="button"
+                aria-controls="main-nav"
+                aria-expanded="false"
+                aria-label="Ouvrir le menu"
+        >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12" class="line-middle"></line>
+                <line x1="3" y1="6" x2="21" y2="6" class="line-top"></line>
+                <line x1="3" y1="18" x2="21" y2="18" class="line-bottom"></line>
+            </svg>
+        </button>
+
+        <nav id="main-nav" class="main-nav">
             <a href="{{ path('app_contenu_index') }}" class="nav-link">Informations</a>
             <a href="{{ path('app_exercice_respiration_play') }}" class="nav-link">Exercice de respiration</a>
             {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('admin') }}" class="nav-link">Administration</a>
             {% endif %}
             {# Ne pas ajouter les autres modules optionnels ici #}
+
+            {# Actions mobiles dans le menu burger #}
+            <div class="nav-mobile-actions">
+                <hr class="nav-divider">
+                {% if app.user %}
+                    <a href="{{ path('app_user_show') }}" class="nav-link">Mon compte</a>
+                    <a href="{{ path('app_logout') }}" class="nav-link">Déconnexion</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="nav-link">Connexion</a>
+                    <a href="{{ path('app_register') }}" class="nav-link">Inscription</a>
+                {% endif %}
+            </div>
         </nav>
 
         <div class="header-actions">
@@ -60,5 +87,26 @@
         <div>© {{ "now"|date("Y") }} – CesiZen</div>
     </footer>
 </div>
+
+<script>
+    (function () {
+        const btn = document.querySelector('.nav-toggle');
+        const nav = document.getElementById('main-nav');
+        if (!btn || !nav) return;
+
+        btn.addEventListener('click', () => {
+            const isOpen = nav.classList.toggle('is-open');
+            btn.setAttribute('aria-expanded', String(isOpen));
+        });
+
+        // Ferme le menu après clic sur un lien (utile en mobile)
+        nav.addEventListener('click', (e) => {
+            const link = e.target.closest('.nav-link');
+            if (!link) return;
+            nav.classList.remove('is-open');
+            btn.setAttribute('aria-expanded', 'false');
+        });
+    })();
+</script>
 </body>
 </html>

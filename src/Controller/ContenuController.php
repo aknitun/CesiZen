@@ -43,14 +43,22 @@ final class ContenuController extends AbstractController
     }
 
     #[Route('/informations/{id}', name: 'app_contenu_show', methods: ['GET'])]
-    public function show(Contenu $contenu): Response
+    public function show($id, ContenuRepository $contenuRepository): Response
     {
+        // On vérifie si $id est un nombre et si le contenu existe
+        $contenu = is_numeric($id) ? $contenuRepository->find($id) : null;
+
+        if (!$contenu || !$contenu->isPublier()) {
+            $this->addFlash('error', 'Le contenu demandé n\'existe pas ou n\'est plus disponible.');
+            return $this->redirectToRoute('app_contenu_index');
+        }
+
         return $this->render('contenu/show.html.twig', [
             'contenu' => $contenu,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_contenu_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_contenu_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function edit(Request $request, Contenu $contenu, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ContenuType::class, $contenu);
@@ -68,7 +76,7 @@ final class ContenuController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_contenu_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_contenu_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function delete(Request $request, Contenu $contenu, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$contenu->getId(), $request->getPayload()->getString('_token'))) {

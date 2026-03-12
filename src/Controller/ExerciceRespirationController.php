@@ -53,7 +53,7 @@ final class ExerciceRespirationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_exercice_respiration_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_exercice_respiration_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function edit(Request $request, ExerciceRespiration $exerciceRespiration, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ExerciceRespirationType::class, $exerciceRespiration);
@@ -71,7 +71,7 @@ final class ExerciceRespirationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_exercice_respiration_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_exercice_respiration_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function delete(Request $request, ExerciceRespiration $exerciceRespiration, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$exerciceRespiration->getId(), $request->getPayload()->getString('_token'))) {
