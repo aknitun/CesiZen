@@ -53,6 +53,9 @@ class UserCrudController extends AbstractCrudController
 
         $actif = BooleanField::new('actif', 'Actif');
 
+        $reponseQuestionSecrete = TextField::new('reponseQuestionSecrete', 'Couleur secrète')
+            ->setHelp('Réponse à la question : Quelle est ta couleur préférée ?');
+
         if ($pageName === 'index') {
             return [
                 $id,
@@ -71,6 +74,7 @@ class UserCrudController extends AbstractCrudController
             $prenom,
             $plainPassword,
             $rolesForm,
+            $reponseQuestionSecrete,
             $actif,
         ];
     }

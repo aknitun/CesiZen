@@ -2,9 +2,9 @@
 # Procédure de Validation de Recette
 
 **Projet :** CesiZen  
-**Version :**  
-**Date :**  
-**Responsable de test :** 
+**Version :*1.0.0*  
+**Date :*12/03*  
+**Responsable de test :*Alexis* 
 
 ---
 

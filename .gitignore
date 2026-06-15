@@ -16,6 +16,7 @@ var/log/*
 .env.test
 .env.dev
 .env.prod
+.env.docker
 
 # Symfony Profiler
 /.web-server-pid
