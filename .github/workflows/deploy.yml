@@ -1,0 +1,33 @@
+﻿name: Deploy (VM Proxmox)
+
+# Se déclenche automatiquement à chaque push sur main,
+# et peut aussi être lancé manuellement depuis l'onglet Actions de GitHub
+# (bouton "Run workflow").
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    # Ce job ne tourne PAS sur les serveurs GitHub, mais directement
+    # sur le runner auto-hébergé installé sur la VM Proxmox de Louis.
+    runs-on: self-hosted
+
+    steps:
+      - name: Récupération de la dernière version du code (git pull)
+        run: |
+          cd /opt/CesiZen
+          git fetch origin main
+          git reset --hard origin/main
+
+      - name: Reconstruction et redémarrage des conteneurs Docker
+        run: |
+          cd /opt/CesiZen
+          docker compose down
+          docker compose up -d --build
+
+      - name: Application des migrations de base de données
+        run: |
+          cd /opt/CesiZen
+          docker compose exec -T php php bin/console doctrine:migrations:migrate --no-interaction
