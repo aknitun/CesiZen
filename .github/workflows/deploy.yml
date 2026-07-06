@@ -27,6 +27,15 @@ jobs:
           docker compose --env-file .env.docker down
           docker compose --env-file .env.docker up -d --build
 
+      - name: Mise à jour des dépendances et vidage du cache Symfony
+        # vendor/ et var/ sont des volumes Docker persistants (voir docker-compose.yml) :
+        # ils ne sont PAS régénérés par --build, il faut donc les rafraîchir explicitement
+        # dans le conteneur en cours d'exécution à chaque déploiement.
+        run: |
+          cd /opt/CesiZen
+          docker compose --env-file .env.docker exec -T php composer install --no-interaction --no-progress --prefer-dist
+          docker compose --env-file .env.docker exec -T php php bin/console cache:clear
+
       - name: Application des migrations de base de données
         run: |
           cd /opt/CesiZen
