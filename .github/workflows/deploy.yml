@@ -15,6 +15,15 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Réparation des permissions (le conteneur PHP écrit en root sur le bind mount)
+        # Le conteneur php tourne en root et génère des fichiers (assets EasyAdmin, cache, etc.)
+        # directement dans le dossier monté depuis la VM. Ces fichiers appartiennent donc à root
+        # côté VM, ce qui empêche github-runner (non-root) de les modifier/supprimer au prochain
+        # déploiement. On corrige la propriété AVANT de toucher au dépôt Git.
+        run: |
+          cd /opt/CesiZen
+          docker compose --env-file .env.docker exec -T --user root php chown -R $(id -u):$(id -g) /var/www/html || true
+
       - name: Récupération de la dernière version du code (git pull)
         run: |
           cd /opt/CesiZen
